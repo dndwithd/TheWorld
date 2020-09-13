@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Population</title>
+
+<script src="pop.5.js">
+//pop=[];
+// import population data
+</script>
+<script src="skel.js"></script>
+
+<script src="gen.0.js">
+</script>
+<script src="disp.0.js">
+</script>
+<script src="filt.0.js">
+</script>
+<script>
+
+function savedata() {
+    var a = document.createElement('a');
+    a.setAttribute('href', 'data:text/plain;charset=utf-u,'+encodeURIComponent(JSON.stringify(pop)));
+    a.setAttribute('download', 'population.json');
+    a.setAttribute("style", "display: none;");
+    document.body.appendChild(a); 
+    a.click()
+    a.remove()
+};
+
+function loaddata() {
+    var files = document.getElementById('selectFiles').files;
+  console.log(files);
+  if (files.length <= 0) {
+    return false;
+  }
+
+  var fr = new FileReader();
+
+  fr.onload = function(e) { 
+  console.log(e);
+    pop = JSON.parse(e.target.result).slice();
+    //var formatted = JSON.stringify(result, null, 2);
+    //document.getElementById('result').value = formatted;
+    //document.getElementById("ts").innerHTML += "<br>e.target.result:" + e.target.result;
+  }
+
+  fr.readAsText(files.item(0));
+    pop = JSON.parse(fr.result).slice();
+    //document.getElementById("ts").innerHTML += "<br>pop.length:" + pop.length;
+    display(pop)
+};
+
+</script>
+</head>
+<body>
+
+<h2>Population</h2>
+<form>
+Name: <input type='text' id='name'></input><br>
+Source: <input type='text' id='source'></input><br>
+<input type='button' onclick="savedata()" value='Save'></input><input type="file" id="selectFiles" value="Import" /><input type='button' onclick="loaddata()" value='Load'></input>
+</form>
+<hr>
+Filters / Sorts:<br>
+<p id="fs"></p>
+<p id="ts"></p>
+<hr>
+
+<p id="demo"></p>
+
+
+<script>
+display(pop);
+</script>
+
+</body>
+</html>
